@@ -35,7 +35,7 @@ genres = [
     },
     {
         'name': 'New age',
-        'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsTnlalTcl328pw0DLmTmdP10sjpTGdoZesM92tV9VM3z6wKmnrg',
+        'image': '',
         'description': '''is a genre of music intended to create artistic inspiration, 
         relaxation, and optimism. It is used by listeners for yoga, massage, meditation, 
         reading as a method of stress management to bring about a state of ecstasy 

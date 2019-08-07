@@ -6,7 +6,11 @@
                 <div class="col s12 m4">
                     <div class="card sticky-action">
                         <div class="card-image waves-effect waves-block waves-light">
-                            <img class="activator responsive-img" src="{{ genre.image }}" alt="">
+                            {% if genre.image == '' %}
+                                <img class="activator responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="">
+                            {% else %}
+                                <img class="activator responsive-img" src="{{ genre.image }}" alt="">
+                            {% endif %}
                         </div>
                         <div class="card-content">
                             <span class="card-title activator grey-text text-darken-4">{{ genre.name }}
