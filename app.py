@@ -26,9 +26,11 @@ def genre(id):
     return render_template('genre.html', genre=genre, music_items=music)
 
 
-@app.route('/genre/<int:id>/music/<int:mid>')
-def music(id, mid):
-    return 'music: <b>'+ str(mid) +'</b> with genre: <b>'+ str(id) +'</b> must be shown here!'
+@app.route('/genre/<int:gid>/music/<int:mid>')
+def music(gid, mid):
+    genre = session.query(Genre).filter_by(id=gid).one()
+    music = session.query(Music).filter_by(id=mid).one()
+    return render_template('music.html', genre=genre, music=music)
 
 
 @app.route('/genre/add')
