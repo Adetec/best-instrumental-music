@@ -29,11 +29,11 @@ class Music(Base):
     @property
     def serialize(self):
         return {
-            'id' : self.id,
-            'title' : self.title,
-            'artist' : self.artist,
-            'image' : self.image,
-            'genre_id' : self.genre_id
+            'id': self.id,
+            'title': self.title,
+            'artist': self.artist,
+            'image': self.image,
+            'genre_id': self.genre_id
         }
 
 
