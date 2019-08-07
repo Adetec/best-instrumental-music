@@ -9,7 +9,10 @@
                 <ul>
                     {% for music in music_items%}
                         {% if music.genre_id == genre.id%}
-                            <li>{{ music.title }} - {{ music.artist }}</li>
+                            <li>
+                                <h3>{{ music.title }} - {{ music.artist }}</h3>
+                                <a href="{{ url_for('music', mid=music.id, gid=genre.id) }}">details</a>
+                            </li>
                             {% endif %}
                     {% endfor %}
                 </ul>
