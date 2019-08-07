@@ -21,7 +21,9 @@ def index():
 
 @app.route('/genre/<int:id>')
 def genre(id):
-    return 'All instrumental music with genre: <b>'+ str(id) +'</b> must be shown here!'
+    genre = session.query(Genre).filter_by(id=id).one()
+    music = session.query(Music).all()
+    return render_template('genre.html', genre=genre, music_items=music)
 
 
 @app.route('/genre/<int:id>/music/<int:mid>')
