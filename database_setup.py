@@ -11,6 +11,7 @@ class Genre(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(20), nullable=False)
+    image = Column(String(100))
     description = Column(String(250))
 
 

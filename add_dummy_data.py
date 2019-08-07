@@ -12,6 +12,7 @@ genres = [
 
     {
         'name': 'Flamenco',
+        'image': 'https://image.freepik.com/free-photo/close-up-man-playing-guitar_1139-363.jpg',
         'description': '''in its strictest sense, is a professionalized art-form based 
         on the various folkloric music traditions of southern Spain in the autonomous 
         community of Andalusia. In a wider sense, the term refers to a variety of 
@@ -19,6 +20,7 @@ genres = [
     },
     {
         'name': 'Jazz',
+        'image': 'https://image.freepik.com/free-photo/man-plays-saxophone_1304-5306.jpg',
         'description': '''is a music genre that originated in the African-American communities 
         of New Orleans, United States. It originated in the late 19th and early 20th centuries, 
         and developed from roots in blues and ragtime. Jazz is seen by many as "America's classical music". 
@@ -33,6 +35,7 @@ genres = [
     },
     {
         'name': 'New age',
+        'image': 'https://cdns-images.dzcdn.net/images/cover/e88a28b6bfad2cbfea3c3e41ecc5ace3/500x500.jpg',
         'description': '''is a genre of music intended to create artistic inspiration, 
         relaxation, and optimism. It is used by listeners for yoga, massage, meditation, 
         reading as a method of stress management to bring about a state of ecstasy 
@@ -94,7 +97,11 @@ music_items = [
 
 
 for i in genres:
-    genre = Genre(name=i['name'], description=i['description'])
+    genre = Genre(
+        name=i['name'],
+        description=i['description'],
+        image=i['image']
+    )
     try:
         session.add(genre)
         session.commit()
