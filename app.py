@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-from flask import Flask
+from flask import Flask, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# import psycopg2
 from database_setup import Base, Genre, Music
 
 app = Flask(__name__)
@@ -16,7 +15,7 @@ session = DBsession()
 @app.route('/')
 def index():
     genres = session.query(Genre).all()
-    return genres[1].description
+    return render_template('genres.html', genres=genres)
 
 
 @app.route('/genre/<int:id>')
