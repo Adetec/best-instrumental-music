@@ -15,7 +15,8 @@ session = DBsession()
 @app.route('/')
 def index():
     genres = session.query(Genre).all()
-    return render_template('genres.html', genres=genres)
+    music = session.query(Music).all()
+    return render_template('genres.html', genres=genres, music_items=music)
 
 
 @app.route('/genre/<int:id>')

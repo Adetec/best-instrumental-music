@@ -12,6 +12,14 @@
         <div>
             <h1>{{genre.name}}</h1>
             <p>{{genre.description}}</p>
+            <h2>Items</h2>
+            <ul>
+                {% for music in music_items%}
+                    {% if music.genre_id == genre.id%}
+                        <li>{{music.title}} - {{music.artist}}</li>
+                        {% endif %}
+                {% endfor %}
+            </ul>
         </div>
     {% endfor %}
 
