@@ -27,7 +27,7 @@ class Music(Base):
     genre = relationship(Genre)
 
     @property
-    def serialize(self)
+    def serialize(self):
         return {
             'id' : self.id,
             'title' : self.title,
@@ -35,7 +35,7 @@ class Music(Base):
             'image' : self.image,
             'genre_id' : self.genre_id
         }
-        
+
 
 engine = create_engine('sqlite:///music.db')
 Base.metadata.create_all(engine)
