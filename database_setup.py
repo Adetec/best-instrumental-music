@@ -21,6 +21,7 @@ class Music(Base):
     title = Column(String(100), nullable=False)
     artist = Column(String(100), nullable=False)
     image = Column(String(100))
+    video = Column(String(100))
     description = Column(String(250))
 
     genre_id = Column(Integer, ForeignKey('genre.id'))
