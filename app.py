@@ -1,13 +1,22 @@
 #!/usr/bin/env python3
 
 from flask import Flask
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+# import psycopg2
+from database_setup import Base, Genre, Music
 
 app = Flask(__name__)
+
+engine = create_engine('sqlite:///music.db?check_same_thread=False')
+DBsession = sessionmaker(bind=engine)
+session = DBsession()
 
 
 @app.route('/')
 def index():
-    return 'All instrumental music must be shown here!'
+    genres = session.query(Genre).all()
+    return genres[1].description
 
 
 @app.route('/genre/<int:id>')
