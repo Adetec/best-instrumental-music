@@ -11,7 +11,7 @@
                         {% if music.genre_id == genre.id%}
                             <li>
                                 <h3>{{ music.title }} - {{ music.artist }}</h3>
-                                <a href="{{ url_for('music', mid=music.id, gid=genre.id) }}">details</a>
+                                <a class="waves-effect waves-light btn" href="{{ url_for('music', mid=music.id, gid=genre.id) }}">details</a>
                             </li>
                             {% endif %}
                     {% endfor %}
