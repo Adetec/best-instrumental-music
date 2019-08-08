@@ -100,6 +100,18 @@ def update_music(id):
     return 'This music: <b>'+ str(id) +'</b> will be updated here!'
 
 
+@app.route('/music/<int:id>/delete')
+def delete_music(id):
+    music = session.query(Music).filter_by(id=id).one()
+    try:
+        session.delete(music)
+        session.commit()
+    except exceptions.SQLAlchemyError:
+        sys.exit('Encountered general SQLAlchemyError!')
+    finally:
+        return redirect(url_for('index'))
+
+
 
 if __name__ == '__main__':
     app.debug = True
