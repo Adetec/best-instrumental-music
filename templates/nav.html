@@ -1,13 +1,21 @@
+<nav>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo center">Home</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="hide-on-med-and-down">
+            <li><a href="{{ url_for('add_genre') }}">Add genre</a></li>
+            <li><a href="{{ url_for('add_music') }}">Add Music</a></li>
+        </ul>
+        <ul class="right hide-on-med-and-down">
+            <li><a class="radius btn" href="#">Login</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <nav>
-        <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper">
-                <a href="/" class="brand-logo center"><i class="material-icons">library_music</i></a>
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="#">Login</a></li>
-                </ul>
-                </div>
-            </nav>
-        </div>
-    </nav>
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="{{ url_for('add_genre') }}">Add genre</a></li>
+    <li><a href="{{ url_for('add_music') }}">Add Music</a></li>
+    <ul>
+        <li><a class="radius btn" href="#">Login</a></li>
+    </ul>
+</ul>
