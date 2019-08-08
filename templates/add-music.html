@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    
+<div class="row">
+        <form class="col s12" method="POST" action="{{ url_for('add_music') }}">
+          <div class="row">
+            <div class="input-field col s6">
+              <input placeholder="Placeholder" required name="name" id="name" type="text" class="validate">
+              <label for="name">Name</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="image" name="image" type="text" class="validate">
+              <label for="image">Image url</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="video" name="video" type="text" class="validate">
+              <label for="video">Image url</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="input-field">
+                    <textarea id="description" name="description" class="materialize-textarea" maxlength="2000" data-length="1500"></textarea>
+                <label for="description">Description</label>
+              </div>
+              <button class="btn" type="submit">Add</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <script>
+            $(document).ready(function() {
+                $('textarea#description').characterCounter();
+            });
+      </script>
+{% endblock %}
