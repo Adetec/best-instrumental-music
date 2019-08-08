@@ -12,7 +12,7 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(20), nullable=False)
     image = Column(String(100))
-    description = Column(String(250))
+    description = Column(String(2000))
 
 
 class Music(Base):
@@ -23,7 +23,7 @@ class Music(Base):
     artist = Column(String(100), nullable=False)
     image = Column(String(100))
     video = Column(String(100))
-    description = Column(String(250))
+    description = Column(String(2000))
 
     genre_id = Column(Integer, ForeignKey('genre.id'))
     genre = relationship(Genre)
