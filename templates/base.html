@@ -16,12 +16,13 @@
     <!-- Load static files -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="indigo darken-1">
     <header>
         {% include 'nav.html' %} 
     </header>
 
     <main class="container">
+        <div id="particles"></div>
         {% block main %}
         
         {% endblock %}
@@ -31,5 +32,6 @@
 
     </footer>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
 </body>
 </html>
