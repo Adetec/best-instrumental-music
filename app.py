@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Genre, Music
@@ -33,9 +33,17 @@ def music(gid, mid):
     return render_template('music.html', genre=genre, music=music)
 
 
-@app.route('/genre/add')
+@app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
-    return 'New genre will be added here!'
+    if request.method == 'POST':
+        # genre= Genre(
+        #     name=request.form['name'],
+        #     image=request.form['image'],
+        #     description=request.form['description']
+        # )
+        return 'New genre will be added here!'
+    else:
+        return render_template('add-genre.html')
 
 
 @app.route('/genre/<int:id>/update')

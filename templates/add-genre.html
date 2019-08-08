@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    
+<div class="row">
+        <form class="col s12" action="{{ url_for('add_genre', method='POST') }}">
+          <div class="row">
+            <div class="input-field col s6">
+              <input placeholder="Placeholder" required name="name" id="name" type="text" class="validate">
+              <label for="name">Name</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="image" name="image" type="text" class="validate">
+              <label for="image">Image url</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s12">
+              <div class="input-field">
+                    <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
+                <label for="description">Description</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+{% endblock %}
