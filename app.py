@@ -91,9 +91,27 @@ def delete_genre(id):
 
 
 
-@app.route('/music/add')
+@app.route('/music/add', methods=['GET', 'POST'])
 def add_music():
-    return 'New music will be added here!'
+    genres = session.query(Genre).all()
+    if request.method == 'POST':
+        music= Music(
+            title=request.form['title'],
+            artist=request.form['artist'],
+            image=request.form['image'],
+            video=request.form['video'],
+            genre_id=request.form.get('genre'),
+            description=request.form['description']
+        )
+        try:
+            session.add(music)
+            session.commit()
+            print('Music:' + music.title + ' added to the database')
+            return redirect(url_for('index'))
+        except exceptions.SQLAlchemyError:
+            sys.exit('Encountered general SQLAlchemyError!')
+    else:
+        return render_template('add-music.html', genres=genres)
 
 @app.route('/music/<int:id>/update')
 def update_music(id):

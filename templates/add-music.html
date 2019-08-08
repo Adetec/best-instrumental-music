@@ -6,8 +6,12 @@
         <form class="col s12" method="POST" action="{{ url_for('add_music') }}">
           <div class="row">
             <div class="input-field col s6">
-              <input placeholder="Placeholder" required name="name" id="name" type="text" class="validate">
-              <label for="name">Name</label>
+              <input placeholder="" required name="title" id="title" type="text" class="validate">
+              <label for="title">Music title</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="artist" name="artist" type="text" class="validate">
+              <label for="artist">Artist or Band name</label>
             </div>
             <div class="input-field col s6">
               <input id="image" name="image" type="text" class="validate">
@@ -15,8 +19,16 @@
             </div>
             <div class="input-field col s6">
               <input id="video" name="video" type="text" class="validate">
-              <label for="video">Image url</label>
+              <label for="video">Video url</label>
             </div>
+            <div class="input-field col s12 m6">
+              <select class="icons" id="genre" name="genre">
+                <option value="" disabled selected>Choose your option</option>
+                  {% for genre in genres %}
+                    <option value="{{ genre.id }}" data-icon="{{ genre.image }}">{{ genre.name }}</option>
+                  {% endfor %}
+              </select>
+              <label>Images in select</label>
           </div>
           <div class="row">
             <div class="col s12">
@@ -32,6 +44,7 @@
       <script>
             $(document).ready(function() {
                 $('textarea#description').characterCounter();
+                $('select').formSelect();
             });
       </script>
 {% endblock %}
