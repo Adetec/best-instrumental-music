@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
-
     {% block main %}
         <div class="row">
             {% for genre in genres %}
-                <div class="col s12 m4">
+                <div class="col s12 m6">
                     <div class="card sticky-action">
                         <div class="card-image waves-effect waves-block waves-light">
                             {% if genre.image == '' %}
@@ -38,4 +37,4 @@
                 </div>
             {% endfor %}
         </div>
-    {% endblock main %}
+    {% endblock %}
