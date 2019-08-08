@@ -70,6 +70,27 @@ def update_genre(id):
         return render_template('update-genre.html', genre=genre)
 
 
+@app.route('/genre/<int:id>/delete')
+def delete_genre(id):
+    genre = session.query(Genre).filter_by(id=id).one()
+    try:
+        if genre:
+            print(genre.name + ' exist')
+            music = session.query(Music).filter_by(genre_id=id).all()
+            for item in music:
+                session.delete(item)
+        session.delete(genre)
+        session.commit()
+    except exceptions.SQLAlchemyError:
+        sys.exit('Encountered general SQLAlchemyError!')
+            
+    # session.add(genre)
+    # session.commit()
+    # print('Genre:' + genre.name + ' updated to the database')
+    return redirect(url_for('index'))
+
+
+
 @app.route('/music/add')
 def add_music():
     return 'New music will be added here!'
