@@ -36,8 +36,6 @@ def music(gid, mid):
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
     if request.method == 'POST':
-        for f in request.form:
-            print(f)
         genre= Genre(
             name=request.form['name'],
             image=request.form['image'],
@@ -56,7 +54,20 @@ def add_genre():
 
 @app.route('/genre/<int:id>/update')
 def update_genre(id):
-    return 'This genre: <b>'+ str(id) +'</b> will be updated here!'
+    genre = session.query(Genre).filter_by(id=id).one()
+    if request.method == 'POST':
+        genre.name = request.form['name']
+        genre.image = request.form['image']
+        genre.description = request.form['description']
+        try:
+            session.add(genre)
+            session.commit()
+            print('Genre:' + genre.name + ' updated to the database')
+            return redirect(url_for('index'))
+        except exceptions.SQLAlchemyError:
+            sys.exit('Encountered general SQLAlchemyError!')
+    else:
+        return render_template('update-genre.html', genre=genre)
 
 
 @app.route('/music/add')
