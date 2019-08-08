@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Genre, Music
@@ -36,12 +36,20 @@ def music(gid, mid):
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
     if request.method == 'POST':
-        # genre= Genre(
-        #     name=request.form['name'],
-        #     image=request.form['image'],
-        #     description=request.form['description']
-        # )
-        return 'New genre will be added here!'
+        for f in request.form:
+            print(f)
+        genre= Genre(
+            name=request.form['name'],
+            image=request.form['image'],
+            description=request.form['description']
+        )
+        try:
+            session.add(genre)
+            session.commit()
+            print('Genre:' + genre.name + ' added to the database')
+            return redirect(url_for('index'))
+        except exceptions.SQLAlchemyError:
+            sys.exit('Encountered general SQLAlchemyError!')
     else:
         return render_template('add-genre.html')
 

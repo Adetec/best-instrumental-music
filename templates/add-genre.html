@@ -3,7 +3,7 @@
 {% block main %}
     
 <div class="row">
-        <form class="col s12" action="{{ url_for('add_genre', method='POST') }}">
+        <form class="col s12" method="POST" action="{{ url_for('add_genre') }}">
           <div class="row">
             <div class="input-field col s6">
               <input placeholder="Placeholder" required name="name" id="name" type="text" class="validate">
@@ -17,11 +17,17 @@
           <div class="row">
             <div class="col s12">
               <div class="input-field">
-                    <textarea id="description" class="materialize-textarea" data-length="120"></textarea>
+                    <textarea id="description" name="description" class="materialize-textarea" maxlength="250" data-length="220"></textarea>
                 <label for="description">Description</label>
               </div>
+              <button class="btn" type="submit">Add</button>
             </div>
           </div>
         </form>
       </div>
+      <script>
+            $(document).ready(function() {
+                $('textarea#description').characterCounter();
+            });
+      </script>
 {% endblock %}
