@@ -34,6 +34,20 @@
                         </iframe>
                     </div>
                 </div>
+                <div class="row">
+                    {% for s in similar_music %}
+                        {% if music.id-1 == s.id %}
+                            <div class="left col s6 m6">
+                                <a href="{{ url_for('music', mid=s.id, gid=s.genre_id) }}" class="waves-effect waves-light btn left"><i class="material-icons left">skip_previous</i>{{ s.title }}</a>
+                            </div>
+                        {% endif %}
+                        {% if music.id+1 == s.id %}
+                            <div class="right col s6 m6">
+                                <a href="{{ url_for('music', mid=s.id, gid=s.genre_id) }}" class="waves-effect waves-light btn right">{{ s.title }}<i class="material-icons right">skip_next</i></a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </section>
         {% else %}
             <p>{{ music.title }} isn't {{ genre.name }} at all! </p>

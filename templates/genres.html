@@ -24,13 +24,14 @@
                             <span class="card-title grey-text text-darken-4">{{ genre.name }}
                                 <i class="material-icons right">close</i>
                             </span>
-                            <p class="">{{ genre.description }}</p>
-                            <ul>
+                            <p class="grey-text text-darken-4">{{ genre.description }}</p>
+                            <ul class="collection">
                                 {% for music in music_items%}
                                     {% if music.genre_id == genre.id%}
-                                        <li>
-                                            <span>{{ music.title }} - {{ music.artist }}</span>
-                                            <a class="waves-effect waves-light btn" href="{{ url_for('music', mid=music.id, gid=genre.id) }}">details</a>
+                                        <li class="collection-item">
+                                            <a class="waves-effect waves-light" href="{{ url_for('music', mid=music.id, gid=genre.id) }}">
+                                                {{ music.title }} - {{ music.artist }}
+                                            </a>
                                         </li>
                                         {% endif %}
                                 {% endfor %}

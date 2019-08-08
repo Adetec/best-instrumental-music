@@ -1,3 +1,6 @@
+body {
+    color: beige;
+}
 .radius {
     border-radius: 5px;
 }
