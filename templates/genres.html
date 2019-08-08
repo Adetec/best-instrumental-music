@@ -15,7 +15,10 @@
                             <span class="card-title activator grey-text text-darken-4">{{ genre.name }}
                                 <i class="material-icons right">more_vert</i>
                             </span>
-                            <p><a href="#">Music items</a></p>
+                            <div class="card-action">
+                                <a href="{{ url_for('update_genre', id=genre.id) }}">Update</a>
+                                <a href="{{ url_for('delete_genre', id=genre.id) }}">Delete</a>
+                            </div>
                         </div>
                         <div class="card-reveal">
                             <span class="card-title grey-text text-darken-4">{{ genre.name }}
