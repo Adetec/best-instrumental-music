@@ -3,7 +3,7 @@
 {% block main %}
     
 <div class="row">
-        <form class="col s12" method="POST" action="{{ url_for('add_genre') }}">
+        <form class="col s12" method="POST" action="{{ url_for('update_genre', id=genre.id)}}">
           <div class="row">
             <div class="input-field col s6">
               <input placeholder="Placeholder" required name="name" id="name" type="text" class="validate" value="{{ genre.name }}">
@@ -20,7 +20,7 @@
                     <textarea id="description" name="description" class="materialize-textarea" maxlength="2000" data-length="1500">{{ genre.description }}"</textarea>
                 <label for="description">Description</label>
               </div>
-              <button class="btn" type="submit">Add</button>
+              <button class="btn" type="submit">Update</button>
             </div>
           </div>
         </form>

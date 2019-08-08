@@ -52,7 +52,7 @@ def add_genre():
         return render_template('add-genre.html')
 
 
-@app.route('/genre/<int:id>/update')
+@app.route('/genre/<int:id>/update', methods=['GET', 'POST'])
 def update_genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
     if request.method == 'POST':
