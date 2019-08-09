@@ -4,29 +4,29 @@
     <div>
         {% if genre.id == music.genre_id %}
         <!-- <h2> {{ genre.name }}'s music</h2> -->
-            <section class="row z-depth-2">
-                <div class="col s12 m6 ">
+            <div class="row z-depth-5 center">
+                <div class="col s12 m6">
                     {% if music.image == '' %}
-                        <img class="radius responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="{{ music.title }}">
+                        <img class="radius left responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="{{ music.title }}">
                     {% else %}
-                        <img class="radius responsive-img" src="{{ music.image }}" alt="{{ music.title }}">
+                        <img class="radius left responsive-img" src="{{ music.image }}" alt="{{ music.title }}">
                     {% endif %}
                 </div>
-                <figcaption class="col s12 m6">
+                <div class="col s12 m6">
                     <h3>{{ music.title }}</h3>
-                    <p>{{ music.artist }}</p>
-                    <p>{{ music.description }}</p>
+                    <h5>{{ music.artist }}</h5>
+                    <p class="left-align">{{ music.description }}</p>
                     <div class="">
-                        <a class="waves-effect waves-light btn" href="{{ url_for('update_music', id=music.id) }}">
-                            <i class="material-icons right">cloud</i>
+                        <a class="waves-effect waves-light btn left" href="{{ url_for('update_music', id=music.id) }}">
+                            <i class="material-icons left">edit</i>
                             Update
                         </a>
-                        <a class="waves-effect waves-light btn" href="{{ url_for('delete_music', id=music.id) }}">
-                            <i class="material-icons right">cloud</i>
+                        <a class="waves-effect waves-light red btn right" href="{{ url_for('delete_music', id=music.id) }}">
+                            <i class="material-icons right">delete_forever</i>
                             Delete
                         </a>
                     </div>
-                </figcaption>
+                </div>
                 <div class="col s12 m12">
                     <div class="video-container">
                         <iframe width="420" height="315"
@@ -48,7 +48,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-            </section>
+            </div>
         {% else %}
             <p>{{ music.title }} isn't {{ genre.name }} at all! </p>
         {% endif %}
