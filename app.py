@@ -29,9 +29,11 @@ def genre(id):
 @app.route('/genre/<int:gid>/music/<int:mid>')
 def music(gid, mid):
     genre = session.query(Genre).filter_by(id=gid).one()
-    similar_music = session.query(Music).filter_by(genre_id=gid).all()
+    playlist = session.query(Music).filter_by(genre_id=gid).all()
     music = session.query(Music).filter_by(id=mid).one()
-    return render_template('music.html', genre=genre, music=music, similar_music=similar_music)
+    num_of_music = len(playlist)
+
+    return render_template('music.html', genre=genre, music=music, playlist=playlist, num_of_music=num_of_music)
 
 
 @app.route('/genre/add', methods=['GET', 'POST'])
