@@ -15,6 +15,7 @@
                 <div class="col s12 m6">
                     <h3>{{ music.title }}</h3>
                     <h5>{{ music.artist }}</h5>
+                    <div class="divider"></div>
                     <p class="left-align">{{ music.description }}</p>
                     <div class="">
                         <a class="waves-effect waves-light btn left" href="{{ url_for('update_music', id=music.id) }}">
@@ -28,13 +29,13 @@
                     </div>
                 </div>
                 <div class="col s12 m12">
-                    <div class="video-container">
+                    <div class="video-container margin-top">
                         <iframe width="420" height="315"
                             src="https://www.youtube.com/embed/{{ music.video }}">
                         </iframe>
                     </div>
                 </div>
-                <div class="row">
+                <div class="col s12 m12 row margin-top">
                     {% for s in similar_music %}
                         {% if music.id-1 == s.id %}
                             <div class="left col s6 m6">

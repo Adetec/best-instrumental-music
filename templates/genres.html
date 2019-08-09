@@ -16,20 +16,27 @@
                                 <i class="material-icons right">more_vert</i>
                             </span>
                             <div class="card-action">
-                                <a href="{{ url_for('update_genre', id=genre.id) }}">Update</a>
-                                <a href="{{ url_for('delete_genre', id=genre.id) }}">Delete</a>
+                                <a class="waves-effect waves-light btn left" href="{{ url_for('update_genre', id=genre.id) }}">
+                                    <i class="material-icons left">edit</i>
+                                    Update
+                                </a>
+                                <a class="waves-effect waves-light red btn right" href="{{ url_for('delete_genre', id=genre.id) }}">
+                                    <i class="material-icons right">delete_forever</i>
+                                    Delete
+                                </a>
                             </div>
                         </div>
                         <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">{{ genre.name }}
+                            <span class="card-title indigo-text text-darken-4">{{ genre.name }}
                                 <i class="material-icons right">close</i>
                             </span>
                             <p class="grey-text text-darken-4">{{ genre.description }}</p>
+                            <div class="card-title indigo-text text-darken-4">{{ genre.name}}'s playlist</div>
                             <ul class="collection">
                                 {% for music in music_items%}
                                     {% if music.genre_id == genre.id%}
                                         <li class="collection-item">
-                                            <a class="waves-effect waves-light" href="{{ url_for('music', mid=music.id, gid=genre.id) }}">
+                                            <a class="indigo-text text-darken-5 waves-effect waves-light" href="{{ url_for('music', mid=music.id, gid=genre.id) }}">
                                                 {{ music.title }} - {{ music.artist }}
                                             </a>
                                         </li>
