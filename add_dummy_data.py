@@ -1,12 +1,20 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Genre, Music
+from database_setup import Base, User, Genre, Music
 import sys
 
 engine = create_engine('sqlite:///music.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+admin = User(name='Adel Lassag', email='adetech.aadl@gmail.com', picture='https://avatars0.githubusercontent.com/u/24706903?s=400&u=82e40d41ecef3f64738a2c37bb6de6c4dfa03efe&v=4')
+try:
+    session.add(admin)
+    session.commit()
+    print('The admin ' + admin.name + ' added to the database')
+except exceptions.SQLAlchemyError:
+    sys.exit('Encountered general SQLAlchemyError!')
 
 genres = [
 
@@ -16,7 +24,8 @@ genres = [
         'description': '''in its strictest sense, is a professionalized art-form based 
         on the various folkloric music traditions of southern Spain in the autonomous 
         community of Andalusia. In a wider sense, the term refers to a variety of 
-        Spanish musical styles developed as early as the 19th century.'''
+        Spanish musical styles developed as early as the 19th century.''',
+        'user_id': 1
     },
     {
         'name': 'Jazz',
@@ -31,7 +40,8 @@ genres = [
         call and response vocals, polyrhythms and improvisation. Jazz has roots in West African 
         cultural and musical expression, and in African-American music traditions including blues 
         and ragtime, as well as European military band music. Intellectuals around the world 
-        have hailed jazz as "one of America's original art forms".'''
+        have hailed jazz as "one of America's original art forms".''',
+        'user_id': 1
     },
     {
         'name': 'New age',
@@ -40,7 +50,8 @@ genres = [
         relaxation, and optimism. It is used by listeners for yoga, massage, meditation, 
         reading as a method of stress management to bring about a state of ecstasy 
         rather than trance, or to create a peaceful atmosphere in their home or other 
-        environments, and is associated with environmentalism and New Age spirituality.'''
+        environments, and is associated with environmentalism and New Age spirituality.''',
+        'user_id': 1
     }
 ]
 
@@ -54,7 +65,8 @@ music_items = [
         from Arles and Montpellier in the south of France, who perform in Andalusian Spanish. 
         Although group members were born in France, their parents were mostly gitanos, 
         Spanish gypsies who fled Catalonia during the 1930s Spanish Civil War.''',
-        'genre_id': 1
+        'genre_id': 1,
+        'user_id': 1
     },
     {
         'title': 'Olvidado',
@@ -65,7 +77,8 @@ music_items = [
         from Arles and Montpellier in the south of France, who perform in Andalusian Spanish. 
         Although group members were born in France, their parents were mostly gitanos, 
         Spanish gypsies who fled Catalonia during the 1930s Spanish Civil War.''',
-        'genre_id': 1
+        'genre_id': 1,
+        'user_id': 1
     },
     {
         'title': 'Take Five',
@@ -78,7 +91,8 @@ music_items = [
         fully two years later it became an unlikely hit[a] and the biggest-selling jazz 
         single ever. Revived since in numerous movie and television soundtracks, 
         the piece still receives significant radio airplay.''',
-        'genre_id': 2
+        'genre_id': 2,
+        'user_id': 1
     },
     {
         'title': 'Prelude and Nostalgia',
@@ -91,7 +105,8 @@ music_items = [
         The album peaked at No. 1 on Billboard's "Top New Age Albums" chart; No. 6 on the 
         "Top Independent Albums" chart; No. 84 on the "Billboard 200" chart; and at No. 
         84 on the "Top Internet Albums" chart, during the same year.''',
-        'genre_id': 3
+        'genre_id': 3,
+        'user_id': 1
     }
 ]
 
