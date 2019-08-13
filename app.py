@@ -12,6 +12,12 @@ DBsession = sessionmaker(bind=engine)
 session = DBsession()
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+    
+
+
 @app.route('/')
 def index():
     genres = session.query(Genre).all()
