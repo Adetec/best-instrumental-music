@@ -115,7 +115,8 @@ for i in genres:
     genre = Genre(
         name=i['name'],
         description=i['description'],
-        image=i['image']
+        image=i['image'],
+        user_id=i['user_id']
     )
     try:
         session.add(genre)
@@ -133,6 +134,7 @@ for i in music_items:
         video=i['video'],
         description=i['description'],
         genre_id=i['genre_id'],
+        user_id=i['user_id']
     )
     try:
         session.add(music)

@@ -154,6 +154,7 @@ def getUserInfo(user_id):
     return user
 
 
+
 def getUserID(email):
     try:
         user = session.query(User).filter_by(email=email).one()
@@ -161,9 +162,8 @@ def getUserID(email):
     except:
         return None
 
+
 # DISCONNECT - Revoke a current user's token and reset their login_session
-
-
 @app.route('/gdisconnect')
 def gdisconnect():
     # Only disconnect a connected user.
@@ -189,17 +189,19 @@ def gdisconnect():
 
 @app.route('/')
 def index():
-    users = session.query(User).all()
+    print('Current user: ' + login_session['username'])
     genres = session.query(Genre).all()
     music = session.query(Music).all()
-    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session, users=users)
+    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
 
 
 @app.route('/genre/<int:id>')
 def genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
+    creator = getUserInfo(genre.user_id)
     music = session.query(Music).all()
-    return render_template('genre.html', genre=genre, music_items=music)
+    print(creator.name + 'is thecreator')
+    return render_template('genre.html', genre=genre, music_items=music, creator=creator)
 
 
 @app.route('/genre/<int:gid>/music/<int:mid>')
