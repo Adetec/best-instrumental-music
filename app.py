@@ -209,7 +209,7 @@ def music(gid, mid):
     music = session.query(Music).filter_by(id=mid).one()
     num_of_music = len(playlist)
 
-    return render_template('music.html', genre=genre, music=music, playlist=playlist, num_of_music=num_of_music)
+    return render_template('music.html', genre=genre, music=music, playlist=playlist, num_of_music=num_of_music, login_session=login_session)
 
 
 @app.route('/genre/add', methods=['GET', 'POST'])
@@ -277,6 +277,9 @@ def delete_genre(id):
 
 @app.route('/music/add', methods=['GET', 'POST'])
 def add_music():
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
+    
     genres = session.query(Genre).all()
     if request.method == 'POST':
         music= Music(
@@ -296,7 +299,7 @@ def add_music():
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
     else:
-        return render_template('add-music.html', genres=genres)
+        return render_template('add-music.html', genres=genres, login_session=login_session)
 
 @app.route('/music/<int:id>/update')
 def update_music(id):
