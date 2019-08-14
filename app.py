@@ -199,7 +199,7 @@ def genre(id):
     creator = getUserInfo(genre.user_id)
     music = session.query(Music).all()
     print(creator.name + 'is thecreator')
-    return render_template('genre.html', genre=genre, music_items=music, creator=creator)
+    return render_template('genre.html', genre=genre, music_items=music, creator=creator, login_session=login_session)
 
 
 @app.route('/genre/<int:gid>/music/<int:mid>')
@@ -251,7 +251,7 @@ def update_genre(id):
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
     else:
-        return render_template('update-genre.html', genre=genre)
+        return render_template('update-genre.html', genre=genre, login_session=login_session)
 
 
 @app.route('/genre/<int:id>/delete')
@@ -279,7 +279,7 @@ def delete_genre(id):
 def add_music():
     if 'username' not in login_session:
         return redirect(url_for('login'))
-    
+
     genres = session.query(Genre).all()
     if request.method == 'POST':
         music= Music(

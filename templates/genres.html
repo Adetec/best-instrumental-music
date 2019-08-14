@@ -2,13 +2,13 @@
     {% block main %}
         <div class="row">
             {% for genre in genres %}
-                <div class="col materialboxed s12 m6">
+                <div class="col s12 m6">
                     <div class="card sticky-action">
-                        <div class="card-image waves-effect waves-block waves-light">
+                        <div class="card-image waves-effect waves-block waves-light materialboxed">
                             {% if genre.image == '' %}
-                                <img class="activator responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="">
+                                <img class="responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="">
                             {% else %}
-                                <img class="activator responsive-img" src="{{ genre.image }}" alt="">
+                                <img class="responsive-img" src="{{ genre.image }}" alt="">
                             {% endif %}
                         </div>
                         <div class="card-content">
@@ -45,7 +45,10 @@
                             <span class="card-title indigo-text text-darken-4">{{ genre.name }}
                                 <i class="material-icons right">close</i>
                             </span>
-                            <p class="grey-text text-darken-4">{{ genre.description }}</p>
+                            <div class="row">
+                                <p class="grey-text text-darken-4 truncate col s8 m8">{{ genre.description }}</p>
+                                <a class="waves-effect waves-light btn-small col s4 m4" href="{{ url_for('genre', id=genre.id) }}"><i class="material-icons left">cloud</i>Read more</a>
+                            </div>
                             <div class="card-title indigo-text text-darken-4">{{ genre.name}}'s playlist</div>
                             <ul class="collection">
                                 {% for music in music_items%}
