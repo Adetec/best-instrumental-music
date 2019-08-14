@@ -25,10 +25,19 @@
                             <i class="material-icons left">edit</i>
                             Update
                         </a>
-                        <a class="waves-effect waves-light red btn right" href="{{ url_for('delete_music', id=music.id) }}">
-                            <i class="material-icons right">delete_forever</i>
-                            Delete
+                        <a class="waves-effect waves-light red btn right modal-trigger" href="#modal">
+                                <i class="material-icons right">delete_forever</i>
+                                Delete
                         </a>
+                        <div id="modal" class="modal black-text">
+                            <div class="modal-content">
+                                <h4>Delete {{ music.title }}</h4>
+                                <p>Are you sure you want to delete <strong>{{ music.title }}</strong>?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ url_for('delete_music', id=music.id) }}" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,4 +80,10 @@
             <p>{{ music.title }} isn't {{ genre.name }} at all! </p>
         {% endif %}
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $('.modal').modal();
+        });
+    </script>
 {% endblock %}
