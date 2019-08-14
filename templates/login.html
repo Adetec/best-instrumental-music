@@ -109,13 +109,12 @@
                     console.log(html);
                     document.body.innerHTML = html;
                     setTimeout(function() {
-                      //window.location.href = "{{url_for('index')}}";
+                      window.location.href = "{{url_for('index')}}";
                     }, 3000);
                   }).catch(function(err){
                     console.error(err);
                   });
                 });
               }
-              init();
             </script>
 {% endblock %}
