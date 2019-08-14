@@ -1,20 +1,121 @@
 {% extends 'base.html' %}
 {% block main %}
-    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-    <script>
-        function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+   <!--  <div id="signinButton" class="g-signin2" data-onsuccess="onSignIn" data-callback="signInCallback" data-theme="dark"></div>
+    <div>{{ state }}</div>
+    <div id="result"></div>
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-        }
-    </script>
+    <script>
+            function onSignIn(googleUser) {
+                // Useful data for your client-side scripts:
+                var profile = googleUser.getBasicProfile();
+                console.log(profile);
+                console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+                console.log('Full Name: ' + profile.getName());
+                console.log('Given Name: ' + profile.getGivenName());
+                console.log('Family Name: ' + profile.getFamilyName());
+                console.log("Image URL: " + profile.getImageUrl());
+                console.log("Email: " + profile.getEmail());
+
+                var id_token = googleUser.getAuthResponse().id_token;
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/gconnect?state={{ state }}');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function() {
+                console.log('Signed in as: ' + profile.getName());
+                };
+                xhr.send('idtoken=' + id_token);
+            }
+
+            /* function signInCallback(authResult) {
+                if (authResult['code']) {
+                  // Hide the sign-in button now that the user is authorized
+                  $('#signinButton').attr('style', 'display: none');
+                  // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+                  $.ajax({
+                    type: 'POST',
+                    url: '/gconnect?state={{STATE}}',
+                    processData: false,
+                    data: authResult['code'],
+                    contentType: 'application/octet-stream; charset=utf-8',
+                    success: function(result) {
+                      // Handle or verify the server response if necessary.
+                      if (result) {
+                        $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+                       setTimeout(function() {
+                        window.location.href = "/restaurant";
+                       }, 4000);
+                        
+                    } else if (authResult['error']) {
+                  console.log('There was an error: ' + authResult['error']);
+                } else {
+                      $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+                       }
+                    }
+                    
+                }); } } */
+    </script> -->
+    <div class="container">
+            <!-- start Google Start Login -->
+            <h1>Sign with your Google Account</h1>
+            <div id="gbutton" ></div>
+            <script>
+              function init() {
+                if (window.Promise && window.fetch) {
+                  console.log('Browser check passed. No polyfills needed.')
+                  loadGoogleOAuth();
+                } else {
+                  console.log('Browser check failed. Loading required polyfills.');
+                  var js = document.createElement('script');
+                  js.src = 'https://polyfill.io/v3/polyfill.min.js?features=Promise,fetch';
+                  js.onload = function() {
+                    loadGoogleOAuth();
+                  };
+                  js.onerror = function() {
+                    console.error('Required polyfills FAILED to load.');
+                    console.error('Google Sign in FAILED to load.');
+                  };
+                  document.head.appendChild(js);
+                }
+              }
+              function loadGoogleOAuth() {
+                gapi.load('auth2', function () {
+                  gapi.signin2.render('gbutton', {
+                    scope: 'email',
+                    onsuccess: offlineAccess
+                  });
+                });
+              }
+              function offlineAccess(googleUser) {
+                var profile = googleUser.getBasicProfile();
+                console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+                console.log('Full Name: ' + profile.getName());
+                console.log('Given Name: ' + profile.getGivenName());
+                console.log('Family Name: ' + profile.getFamilyName());
+                console.log("Image URL: " + profile.getImageUrl());
+                console.log("Email: " + profile.getEmail());
+                // request offline access
+                gapi.auth2.getAuthInstance().grantOfflineAccess({ "prompt": "consent" }).then(function (resp) {
+                  var auth_code = resp.code;
+                  console.log(resp);
+                  fetch("{{url_for('gconnect')}}?state={{state}}", {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/octet-stream; charset=utf-8'
+                    },
+                    body: auth_code
+                  }).then(function(response) {
+                    return response.text();
+                  }).then(function(html) {
+                    console.log(html);
+                    document.body.innerHTML = html;
+                    setTimeout(function() {
+                      //window.location.href = "{{url_for('index')}}";
+                    }, 3000);
+                  }).catch(function(err){
+                    console.error(err);
+                  });
+                });
+              }
+              init();
+            </script>
 {% endblock %}
