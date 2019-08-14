@@ -213,6 +213,8 @@ def music(gid, mid):
 
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
         genre= Genre(
@@ -229,7 +231,7 @@ def add_genre():
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
     else:
-        return render_template('add-genre.html')
+        return render_template('add-genre.html', login_session=login_session)
 
 
 @app.route('/genre/<int:id>/update', methods=['GET', 'POST'])
