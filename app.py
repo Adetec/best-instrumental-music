@@ -189,9 +189,10 @@ def gdisconnect():
 
 @app.route('/')
 def index():
+    users = session.query(User).all()
     genres = session.query(Genre).all()
     music = session.query(Music).all()
-    return render_template('genres.html', genres=genres, music_items=music)
+    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session, users=users)
 
 
 @app.route('/genre/<int:id>')
@@ -213,11 +214,13 @@ def music(gid, mid):
 
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
+
     if request.method == 'POST':
         genre= Genre(
             name=request.form['name'],
             image=request.form['image'],
-            description=request.form['description']
+            description=request.form['description'],
+            user_id=login_session['user_id']
         )
         try:
             session.add(genre)
@@ -236,7 +239,8 @@ def update_genre(id):
     if request.method == 'POST':
         genre.name = request.form['name']
         genre.image = request.form['image']
-        genre.description = request.form['description']
+        genre.description = request.form['description'],
+        user_id=login_session['user_id']
         try:
             session.add(genre)
             session.commit()
@@ -279,7 +283,8 @@ def add_music():
             image=request.form['image'],
             video=request.form['video'],
             genre_id=request.form.get('genre'),
-            description=request.form['description']
+            description=request.form['description'],
+            user_id=login_session['user_id']
         )
         try:
             session.add(music)

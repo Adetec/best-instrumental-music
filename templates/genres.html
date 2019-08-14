@@ -31,6 +31,7 @@
                                 <i class="material-icons right">close</i>
                             </span>
                             <p class="grey-text text-darken-4">{{ genre.description }}</p>
+                            <p class="grey-text text-darken-4">Added by: {{ genre.user_id}}</p>
                             <div class="card-title indigo-text text-darken-4">{{ genre.name}}'s playlist</div>
                             <ul class="collection">
                                 {% for music in music_items%}
@@ -46,7 +47,15 @@
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+                {% endfor %}
+                <div>
+                    {{ login_session }}
+                </div>
+                <div>
+                    {% for user in users %}
+                        {{ user.email }}
+                    {% endfor %}
+                </div>
         </div>
         <script>
             $(document).ready(function(){
