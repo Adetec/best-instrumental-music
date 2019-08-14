@@ -15,8 +15,8 @@
                             <span class="card-title activator grey-text text-darken-4">{{ genre.name }}
                                 <i class="material-icons right">more_vert</i>
                             </span>
-                            {% if genre.user_id == login_session['user_id'] %}
-                                <div class="card-action">
+                            <div class="card-action">
+                                {% if genre.user_id == login_session['user_id'] %}
                                     <a class="waves-effect waves-light btn left" href="{{ url_for('update_genre', id=genre.id) }}">
                                         <i class="material-icons left">edit</i>
                                         Update
@@ -25,8 +25,21 @@
                                         <i class="material-icons right">delete_forever</i>
                                         Delete
                                     </a>
-                                </div>
-                            {% endif %}
+                                    {% else %}
+                                    <div class="">
+                                        <div class="col s2">
+                                            <img src="{{ genre.user.picture}}" alt="{{ genre.user.name}}" class="circle responsive-img">
+                                        </div>
+                                        <div class="col s10">
+                                            <span class="black-text">
+                                                added by: <i class="grey-text">{{ genre.user.name}}</i>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
+                                {% endif %}
+                                <div class="marg-btm"></div>
+                            </div>
                         </div>
                         <div class="card-reveal">
                             <span class="card-title indigo-text text-darken-4">{{ genre.name }}

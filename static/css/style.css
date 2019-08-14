@@ -5,6 +5,10 @@ body {
     border-radius: 5px;
 }
 
+.marg-btm {
+    margin-bottom: 12px;
+}
+
 #particles {
     position: absolute;
     width: 100%;

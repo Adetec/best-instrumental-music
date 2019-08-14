@@ -31,18 +31,16 @@ CLIENT_REDIRECT = '/%s' % (CLIENT_REDIRECT.split('/')[-1])
 
 print(CLIENT_ID)
 
-def new_state():
-    state = ''.join(random.choice(string.ascii_uppercase +
-                    string.digits) for x in range(32))
-    login_session['state'] = state
-    return state
+
 
 
 
 @app.route('/login')
 def login():
-    state = new_state()
-    return render_template('login.html', state=state, CLIENT_ID=CLIENT_ID)
+    state = ''.join(random.choice(string.ascii_uppercase +
+                    string.digits) for x in range(32))
+    login_session['state'] = state
+    return render_template('login.html', state=state, CLIENT_ID=CLIENT_ID, login_session=login_session)
 
 @app.route('/gconnect', methods=['GET', 'POST'])
 def gconnect():
@@ -189,7 +187,6 @@ def gdisconnect():
 
 @app.route('/')
 def index():
-    print('Current user: ' + login_session['username'])
     genres = session.query(Genre).all()
     music = session.query(Music).all()
     return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
