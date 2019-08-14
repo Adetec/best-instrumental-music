@@ -3,9 +3,9 @@
     <div class="container">
             <!-- start Google Start Login -->
             <h1>Sign with your Google Account</h1>
-            <div id="gbutton" ></div>
+            <div id="gbutton" class="g-signin2" data-onsuccess="connect"></div>
             <script>
-              function init() {
+              function connect() {
                 if (window.Promise && window.fetch) {
                   console.log('Browser check passed. No polyfills needed.')
                   loadGoogleOAuth();
