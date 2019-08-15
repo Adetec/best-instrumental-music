@@ -32,7 +32,8 @@
                         <p>Are you sure you want to delete <strong>{{ genre.name }}</strong>?</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ url_for('delete_genre', id=genre.id) }}" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                        <a href="{{ url_for('delete_genre', id=genre.id) }}" class="modal-close waves-effect red white-text waves-green btn-flat">Delete</a>
+                        <a href="#" class="modal-close waves-effect indigo white-text waves-green btn-flat">Cancel</a>
                     </div>
                 </div>
             </div>
