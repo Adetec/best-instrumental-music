@@ -29,7 +29,6 @@ CLIENT_REDIRECT = g_credentials['redirect_uris'][0]
 CLIENT_REDIRECT = '/%s' % (CLIENT_REDIRECT.split('/')[-1])
 
 
-print(CLIENT_ID)
 
 
 
@@ -41,6 +40,37 @@ def login():
                     string.digits) for x in range(32))
     login_session['state'] = state
     return render_template('login.html', state=state, CLIENT_ID=CLIENT_ID, login_session=login_session)
+
+
+@app.route('/logout')
+def logout():
+    access_token = None
+    if 'access_token' in login_session:
+        access_token = login_session['access_token']
+    if access_token is None:
+        print('Access Token is None')
+        response = make_response(
+                json.dumps('Current user not connected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    url = ('https://accounts.google.com/o/oauth2/revoke?token=%s'
+           % login_session['access_token'])
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    if result['status'] == '200':
+        del login_session['access_token']
+        del login_session['user_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['provider']
+        flash("Successfully loged out")
+        return redirect(url_for('index'))
+    else:
+        flash("FAILED to revoke token for given user")
+        return redirect(url_for('index'))
+
+
 
 @app.route('/gconnect', methods=['GET', 'POST'])
 def gconnect():
@@ -191,6 +221,8 @@ def index():
     genres = session.query(Genre).all()
     music = session.query(Music).all()
     count = len(music)
+    for item in login_session:
+        print(login_session.get(item))
     return render_template('genres.html', genres=genres, music_items=music, login_session=login_session, count=count)
 
 
