@@ -3,7 +3,7 @@
 {% block main %}
         {% if genre.id == music.genre_id %}
             <div class="row center">
-            
+                
                 <div class="card-image col s12 m4">
                     {% if music.image == '' %}
                         <img class="radius responsive-img" src="https://image.freepik.com/free-photo/hand-crowd-disco_23-2147717087.jpg" alt="{{ music.title }}">
@@ -17,7 +17,10 @@
                     <h5>{{ music.artist }}</h5>
                     <div class="divider"></div>
                     <p class="left-align">{{ music.description }}</p>
-                    <p class="right-align">Added by <i>{{ music.user.name }}</i></p>
+                    <div class="row">
+                        <a class="waves-effect white indigo-text waves-light btn-small col s6 m4 left" href="{{ url_for('jsonify_music', gid=music.genre_id, mid=music.id) }}" target="_BLANK"><i class="material-icons right">cloud</i>API</a>
+                        <p class="right-align col s6 m6">Added by <i>{{ music.user.name }}</i></p>
+                    </div>
                     <div class="">
                         {% if login_session['user_id'] == music.user_id %}
         
