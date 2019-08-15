@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    
         {% if genre.id == music.genre_id %}
-        <!-- <h2> {{ genre.name }}'s music</h2> -->
             <div class="row center">
             
                 <div class="card-image col s12 m4">
@@ -21,23 +19,26 @@
                     <p class="left-align">{{ music.description }}</p>
                     <p class="right-align">Added by <i>{{ music.user.name }}</i></p>
                     <div class="">
-                        <a class="waves-effect waves-light btn left" href="{{ url_for('update_music', id=music.id) }}">
-                            <i class="material-icons left">edit</i>
-                            Update
-                        </a>
-                        <a class="waves-effect waves-light red btn right modal-trigger" href="#modal">
-                                <i class="material-icons right">delete_forever</i>
-                                Delete
-                        </a>
-                        <div id="modal" class="modal black-text">
-                            <div class="modal-content">
-                                <h4>Delete {{ music.title }}</h4>
-                                <p>Are you sure you want to delete <strong>{{ music.title }}</strong>?</p>
+                        {% if login_session['user_id'] == music.user_id %}
+        
+                            <a class="waves-effect waves-light btn left" href="{{ url_for('update_music', id=music.id) }}">
+                                <i class="material-icons left">edit</i>
+                                Update
+                            </a>
+                            <a class="waves-effect waves-light red btn right modal-trigger" href="#modal">
+                                    <i class="material-icons right">delete_forever</i>
+                                    Delete
+                            </a>
+                            <div id="modal" class="modal black-text">
+                                <div class="modal-content">
+                                    <h4>Delete {{ music.title }}</h4>
+                                    <p>Are you sure you want to delete <strong>{{ music.title }}</strong>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{{ url_for('delete_music', id=music.id) }}" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                <a href="{{ url_for('delete_music', id=music.id) }}" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

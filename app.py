@@ -302,9 +302,27 @@ def add_music():
     else:
         return render_template('add-music.html', genres=genres, login_session=login_session)
 
-@app.route('/music/<int:id>/update')
+@app.route('/music/<int:id>/update', methods=['GET', 'POST'])
 def update_music(id):
-    return 'This music: <b>'+ str(id) +'</b> will be updated here!'
+    music = session.query(Music).filter_by(id=id).one()
+    genres = session.query(Genre).all()
+    if request.method == 'POST':
+        music.title = request.form['title']
+        music.image = request.form['image']
+        music.video = request.form['video']
+        music.description = request.form['description']
+        music.genre_id = request.form['genre']
+        music.user_id=login_session['user_id']
+        try:
+            session.add(music)
+            session.commit()
+            print('Music:' + music.title + ' updated to the database')
+            flash(music.title + ' Has been updated')
+            return redirect(url_for('index'))
+        except exceptions.SQLAlchemyError:
+            sys.exit('Encountered general SQLAlchemyError!')
+    else:
+        return render_template('update-music.html', music=music, login_session=login_session, genres=genres)
 
 
 @app.route('/music/<int:id>/delete')

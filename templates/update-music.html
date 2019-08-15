@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    
+<div class="row">
+        <form class="col s12" method="POST" action="{{ url_for('update_music', id=music.id)}}">
+          <div class="row">
+            <div class="input-field col s6">
+              <input placeholder="Placeholder" required name="title" id="title" type="text" class="validate" value="{{ music.title }}">
+              <label for="title">Music title</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="image" name="image" type="text" class="validate" value="{{ music.image }}">
+              <label for="image">Image url</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="video" name="video" type="text" class="validate" value="{{ music.video }}">
+              <label for="video">Video url</label>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="input-field col s12 m12">
+                <select class="icons" id="genre" name="genre">
+                  <option value="{{ music.genre_id }}" data-icon="{{ music.genre.image }}" selected>{{ music.genre.name }}</option>
+                    {% for genre in genres %}
+                      {% if not genre.id == music.genre_id %}
+                        <option value="{{ genre.id }}" data-icon="{{ genre.image }}">{{ genre.name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                </select>
+                <label>Images in select</label>
+              </div>
+            <div class="col s12">
+              <div class="input-field">
+                    <textarea id="description" name="description" class="materialize-textarea" maxlength="2000" data-length="1500">{{ music.description }}"</textarea>
+                <label for="description">Description</label>
+              </div>
+              <button class="btn" type="submit">Update</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <script>
+            $(document).ready(function() {
+                $('textarea#description').characterCounter();
+                $('select').formSelect();
+            });
+      </script>
+{% endblock %}
