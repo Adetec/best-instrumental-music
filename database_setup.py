@@ -35,6 +35,16 @@ class Genre(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'image': self.image,
+            'description': self.description,
+            'user_id': self.user_id
+        }
+
 
 class Music(Base):
     __tablename__ = 'music'

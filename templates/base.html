@@ -28,6 +28,25 @@
 
     <main class="container margin-top">
         <div id="particles"></div>
+        {% with  messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div id="flash" class="modal">
+                        <div class="modal-content center">
+                            <h4 class="indigo-text">Flash message</h4>
+                            <p class="black-text">{{ message }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat"><i class="green-text material-icons">check</i></a>
+                        </div>
+                    </div>
+                    <script>
+
+                    </script>
+                {% endfor %}
+            {% endif %}
+        
+        {% endwith %}
         {% block main %}
         
         {% endblock %}
@@ -38,5 +57,10 @@
     </footer>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('#flash').modal('open'); 
+        });
+    </script>
 </body>
 </html>

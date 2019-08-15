@@ -228,6 +228,7 @@ def add_genre():
             session.add(genre)
             session.commit()
             print('Genre:' + genre.name + ' added to the database')
+            flash(genre.name + ' Has been added')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
@@ -241,12 +242,13 @@ def update_genre(id):
     if request.method == 'POST':
         genre.name = request.form['name']
         genre.image = request.form['image']
-        genre.description = request.form['description'],
-        user_id=login_session['user_id']
+        genre.description = request.form['description']
+        genre.user_id=login_session['user_id']
         try:
             session.add(genre)
             session.commit()
             print('Genre:' + genre.name + ' updated to the database')
+            flash(genre.name + ' Has been updated')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
@@ -265,12 +267,10 @@ def delete_genre(id):
                 session.delete(item)
         session.delete(genre)
         session.commit()
+        flash(genre.name + ' Has been deleted')
     except exceptions.SQLAlchemyError:
         sys.exit('Encountered general SQLAlchemyError!')
-            
-    # session.add(genre)
-    # session.commit()
-    # print('Genre:' + genre.name + ' updated to the database')
+        
     return redirect(url_for('index'))
 
 
@@ -295,6 +295,7 @@ def add_music():
             session.add(music)
             session.commit()
             print('Music:' + music.title + ' added to the database')
+            flash(music.title + ' Has been added')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
@@ -312,6 +313,7 @@ def delete_music(id):
     try:
         session.delete(music)
         session.commit()
+        flash(music.title + ' Has been deleted')
     except exceptions.SQLAlchemyError:
         sys.exit('Encountered general SQLAlchemyError!')
     finally:
