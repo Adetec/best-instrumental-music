@@ -382,6 +382,11 @@ def jsonify_genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
     return jsonify(genre=genre.serialize)
 
+@app.route('/JSON/v1/music')
+def jsonify_all_music():
+    music = session.query(Music).all()
+    return jsonify(music=[m.serialize for m in music])
+
 
 @app.route('/JSON/v1/genre/<int:gid>/music/<int:mid>')
 def jsonify_music(gid, mid):
