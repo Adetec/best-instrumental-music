@@ -11,7 +11,8 @@
                 <li>
                     <div class="btn btn-floating tooltipped" data-position="bottom" data-tooltip="I am {{ login_session['username'] }}">
                         <img class="responsive-img" src="{{ login_session['picture'] }}" alt="{{ login_session['username'] }}">
-                    {{ login_session['username'][0] }}</div></li>
+                    </div>
+                </li>
                 <li><a class="radius red btn" href="{{ url_for('logout') }}">Logout</a></li>
             </ul>
         {% else %}
