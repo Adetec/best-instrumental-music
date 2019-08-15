@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash
+from flask import Flask, render_template, request, redirect, url_for, make_response, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Genre, Music
@@ -371,6 +371,11 @@ def delete_music(id):
         return redirect(url_for('index'))
 
 
+
+@app.route('/JSON/v1/genres')
+def jsonify_genres():
+    genres = session.query(Genre).all()
+    return jsonify(genres=[genre.serialize for genre in genres])
 
 if __name__ == '__main__':
     app.debug = True
