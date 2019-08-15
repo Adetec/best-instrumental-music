@@ -190,7 +190,8 @@ def gdisconnect():
 def index():
     genres = session.query(Genre).all()
     music = session.query(Music).all()
-    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
+    count = len(music)
+    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session, count=count)
 
 
 @app.route('/genre/<int:id>')
