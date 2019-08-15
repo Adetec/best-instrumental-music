@@ -223,7 +223,7 @@ def index():
     count = len(music)
     for item in login_session:
         print(login_session.get(item))
-    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session, count=count)
+    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
 
 
 @app.route('/genre/<int:id>')
