@@ -377,6 +377,11 @@ def jsonify_genres():
     genres = session.query(Genre).all()
     return jsonify(genres=[genre.serialize for genre in genres])
 
+@app.route('/JSON/v1/genres/<int:id>')
+def jsonify_genre(id):
+    genre = session.query(Genre).filter_by(id=id).one()
+    return jsonify(genre=genre.serialize)
+
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'super secret key'
