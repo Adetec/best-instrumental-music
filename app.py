@@ -382,6 +382,14 @@ def jsonify_genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
     return jsonify(genre=genre.serialize)
 
+
+@app.route('/JSON/v1/genre/<int:gid>/music/<int:mid>')
+def jsonify_music(gid, mid):
+    genre = session.query(Genre).filter_by(id=gid).one()
+    music = session.query(Music).filter_by(id=mid).one()
+
+    return jsonify(music=music.serialize)
+
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'super secret key'
