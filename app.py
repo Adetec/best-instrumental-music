@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+# Import modules
 from flask import Flask, render_template, request, redirect, url_for, make_response, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -7,17 +8,19 @@ from database_setup import Base, User, Genre, Music
 from flask import session as login_session
 import random, string, httplib2, json, requests
 
+# Import google Oauth modules
 from google.oauth2 import id_token
 from oauth2client.client import FlowExchangeError, flow_from_clientsecrets
 
 app = Flask(__name__)
 
-
+# Connect to the database
 engine = create_engine('sqlite:///music.db?check_same_thread=False')
+# Create database session
 DBsession = sessionmaker(bind=engine)
 session = DBsession()
 
-# google client secret
+# google client secret variables
 g_credentials = json.loads(open('client_secret.json', 'r').read())['web']
 CLIENT_ID = g_credentials['client_id']
 CLIENT_SECRET = g_credentials['client_secret']
@@ -29,13 +32,9 @@ CLIENT_REDIRECT = g_credentials['redirect_uris'][0]
 CLIENT_REDIRECT = '/%s' % (CLIENT_REDIRECT.split('/')[-1])
 
 
-
-
-
-
-
 @app.route('/login')
 def login():
+    # Create anti forgery attack state token
     state = ''.join(random.choice(string.ascii_uppercase +
                     string.digits) for x in range(32))
     login_session['state'] = state
@@ -45,10 +44,11 @@ def login():
 @app.route('/logout')
 def logout():
     access_token = None
+    # check if someone is connected
     if 'access_token' in login_session:
+        # Set login_session access token to None
         access_token = login_session['access_token']
     if access_token is None:
-        print('Access Token is None')
         response = make_response(
                 json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -57,6 +57,7 @@ def logout():
            % login_session['access_token'])
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
+    # Logout current user
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['user_id']
@@ -153,7 +154,7 @@ def gconnect():
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
-
+    # Render success login procedure
     output = ''
     output = '<div class="center-align">'
     output += '<h1 class="white-text">Welcome, <span class="">'
@@ -166,9 +167,8 @@ def gconnect():
     print("done!")
     return output
 
+
 # User Helper Functions
-
-
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
@@ -215,42 +215,46 @@ def gdisconnect():
         return response
 
 
-
+# Main page
 @app.route('/')
 def index():
+    # Get all music items and genres
     genres = session.query(Genre).all()
     music = session.query(Music).all()
-    count = len(music)
-    for item in login_session:
-        print(login_session.get(item))
     return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
 
 
 @app.route('/genre/<int:id>')
 def genre(id):
+    # Get a specific genre
     genre = session.query(Genre).filter_by(id=id).one()
+    # Get the user creator of that genre
     creator = getUserInfo(genre.user_id)
+    print(creator.name + 'is the creator')
+    # Get all music item
     music = session.query(Music).all()
-    print(creator.name + 'is thecreator')
     return render_template('genre.html', genre=genre, music_items=music, creator=creator, login_session=login_session)
 
 
 @app.route('/genre/<int:gid>/music/<int:mid>')
 def music(gid, mid):
+    # Get requested music genre
     genre = session.query(Genre).filter_by(id=gid).one()
+    # Get all music with the same genre to render a playlist in the template
     playlist = session.query(Music).filter_by(genre_id=gid).all()
+    # Get requested music genre
     music = session.query(Music).filter_by(id=mid).one()
-    num_of_music = len(playlist)
+    return render_template('music.html', genre=genre, music=music, playlist=playlist, login_session=login_session)
 
-    return render_template('music.html', genre=genre, music=music, playlist=playlist, num_of_music=num_of_music, login_session=login_session)
-
-
+# Add new genre
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
+    # Make sure someone is connected
     if 'username' not in login_session:
         return redirect(url_for('login'))
 
     if request.method == 'POST':
+        # Create new genre object
         genre= Genre(
             name=request.form['name'],
             image=request.form['image'],
@@ -258,9 +262,11 @@ def add_genre():
             user_id=login_session['user_id']
         )
         try:
+            # Save new genre to the database
             session.add(genre)
             session.commit()
             print('Genre:' + genre.name + ' added to the database')
+            # Return a success message to the user & return to tha main page
             flash(genre.name + ' Has been added')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
@@ -268,10 +274,21 @@ def add_genre():
     else:
         return render_template('add-genre.html', login_session=login_session)
 
-
+# Update genre
 @app.route('/genre/<int:id>/update', methods=['GET', 'POST'])
 def update_genre(id):
+    # If user is not connected redirect him to do so
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
+
+    # Get the genre to be updated 
     genre = session.query(Genre).filter_by(id=id).one()
+    # Deny the user if he is not the creator or connected
+    if not login_session['user_id'] == genre.user_id:
+        # Alert authorization
+        flash('Sorry!, You are not autorized to update %s' % genre.name)
+        return redirect(url_for('index'))
+    # Save user changes
     if request.method == 'POST':
         genre.name = request.form['name']
         genre.image = request.form['image']
@@ -281,6 +298,7 @@ def update_genre(id):
             session.add(genre)
             session.commit()
             print('Genre:' + genre.name + ' updated to the database')
+            # Return a success message to the user
             flash(genre.name + ' Has been updated')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
@@ -292,29 +310,43 @@ def update_genre(id):
 @app.route('/genre/<int:id>/delete')
 def delete_genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
+    # If the user is not connected redirect him to do so
+    if 'user_id' not in login_session:
+        return redirect(url_for('login'))
+
+    # Deny the user if he is not the creator or connected
+    if not login_session['user_id'] == genre.user_id:
+        # Alert authorization
+        flash('Sorry!, You are not autorized to delete %s' % genre.name)
+        return redirect(url_for('index'))
     try:
+        # Check if genre to be deleted exists
         if genre:
-            print(genre.name + ' exist')
+            # Get all music with this genre
             music = session.query(Music).filter_by(genre_id=id).all()
+            # Delete them
             for item in music:
                 session.delete(item)
-        session.delete(genre)
-        session.commit()
-        flash(genre.name + ' Has been deleted')
+            # Finall Delete this genre
+            session.delete(genre)
+            session.commit()
+            flash(genre.name + ' Has been deleted')
     except exceptions.SQLAlchemyError:
         sys.exit('Encountered general SQLAlchemyError!')
-        
+    # Go to the main page
     return redirect(url_for('index'))
 
 
-
+# Add new music
 @app.route('/music/add', methods=['GET', 'POST'])
 def add_music():
+    # If the user is not connected redirect him to do so
     if 'username' not in login_session:
         return redirect(url_for('login'))
-
+    # Get all genres to pass them to the template for 'Form's select element'
     genres = session.query(Genre).all()
     if request.method == 'POST':
+        # Create new music object
         music= Music(
             title=request.form['title'],
             artist=request.form['artist'],
@@ -325,20 +357,37 @@ def add_music():
             user_id=login_session['user_id']
         )
         try:
+            # Save music object to the database
             session.add(music)
             session.commit()
             print('Music:' + music.title + ' added to the database')
+            # Send a success message to the user
             flash(music.title + ' Has been added')
+            # Then go to the main page
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
+    # If the method is 'GET'
     else:
         return render_template('add-music.html', genres=genres, login_session=login_session)
 
+# Update music item
 @app.route('/music/<int:id>/update', methods=['GET', 'POST'])
 def update_music(id):
+    # If user is not connected redirect him to do so
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
+
+    # Get the music to be updated
     music = session.query(Music).filter_by(id=id).one()
+    # Deny the user if he is not the creator or connected
+    if not login_session['user_id'] == music.user_id:
+        # Alert authorization
+        flash('Sorry!, You are not autorized to Update %s' % music.title)
+        return redirect(url_for('index'))
+    # Get all genres records in case the user want changing requested music to other genre
     genres = session.query(Genre).all()
+    # Save user changes
     if request.method == 'POST':
         music.title = request.form['title']
         music.image = request.form['image']
@@ -350,6 +399,7 @@ def update_music(id):
             session.add(music)
             session.commit()
             print('Music:' + music.title + ' updated to the database')
+            # Send a success message to the user
             flash(music.title + ' Has been updated')
             return redirect(url_for('index'))
         except exceptions.SQLAlchemyError:
@@ -361,9 +411,20 @@ def update_music(id):
 @app.route('/music/<int:id>/delete')
 def delete_music(id):
     music = session.query(Music).filter_by(id=id).one()
+    # If the user is not connected redirect him to do so
+    if 'user_id' not in login_session:
+        return redirect(url_for('login'))
+
+    # Deny the user if he is not the creator or connected
+    if not login_session['user_id'] == music.user_id:
+        # Alert authorization
+        flash('Sorry!, You are not autorized to delete %s' % music.title)
+        return redirect(url_for('index'))
+    # Delete the music
     try:
         session.delete(music)
         session.commit()
+        # Send a success message to user
         flash(music.title + ' Has been deleted')
     except exceptions.SQLAlchemyError:
         sys.exit('Encountered general SQLAlchemyError!')
@@ -371,28 +432,38 @@ def delete_music(id):
         return redirect(url_for('index'))
 
 
-
+'''
+    * * * * * * * * * *  *
+    *   API EndPoints    *
+    * * * * * * * * * *  *
+'''
+# All genres categories
 @app.route('/JSON/v1/genres')
 def jsonify_genres():
     genres = session.query(Genre).all()
     return jsonify(genres=[genre.serialize for genre in genres])
 
+# # Specific genre
 @app.route('/JSON/v1/genres/<int:id>')
 def jsonify_genre(id):
     genre = session.query(Genre).filter_by(id=id).one()
     return jsonify(genre=genre.serialize)
 
+
+# All music items
 @app.route('/JSON/v1/music')
 def jsonify_all_music():
     music = session.query(Music).all()
     return jsonify(music=[m.serialize for m in music])
 
+# All music items related to a Specific genre
 @app.route('/JSON/v1/genre/<int:gid>/music')
 def jsonify_genre_playlist(gid):
     music = session.query(Music).filter_by(genre_id=gid).all()
 
     return jsonify(music=[m.serialize for m in music])
 
+# Specific music
 @app.route('/JSON/v1/genre/<int:gid>/music/<int:mid>')
 def jsonify_music(gid, mid):
     genre = session.query(Genre).filter_by(id=gid).one()
@@ -400,6 +471,7 @@ def jsonify_music(gid, mid):
 
     return jsonify(music=music.serialize)
 
+# Run the app in the '__main__' scope
 if __name__ == '__main__':
     app.debug = True
     app.secret_key = 'super secret key'
