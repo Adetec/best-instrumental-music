@@ -8,7 +8,11 @@
                 <li><a href="{{ url_for('add_music') }}">Add Music</a></li>
             </ul>
             <ul class="right hide-on-med-and-down row">
-                <li><a class="radius btn" href="{{ url_for('logout') }}">Logout</a></li>
+                <li>
+                    <div class="btn btn-floating tooltipped" data-position="bottom" data-tooltip="I am {{ login_session['username'] }}">
+                        <img class="responsive-img" src="{{ login_session['picture'] }}" alt="{{ login_session['username'] }}">
+                    {{ login_session['username'][0] }}</div></li>
+                <li><a class="radius red btn" href="{{ url_for('logout') }}">Logout</a></li>
             </ul>
         {% else %}
             <ul class="right hide-on-med-and-down row">
@@ -22,8 +26,12 @@
     {% if login_session['username'] %}
         <li><a href="{{ url_for('add_genre') }}">Add genre</a></li>
         <li><a href="{{ url_for('add_music') }}">Add Music</a></li>
-    {% endif %}
+        <ul>
+            <li><a class="radius red darken-4 btn" href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    {% else %}
     <ul>
         <li><a class="radius indigo darken-4 btn" href="{{ url_for('login') }}">Login</a></li>
     </ul>
+    {% endif %}
 </ul>
