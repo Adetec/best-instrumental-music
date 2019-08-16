@@ -262,6 +262,7 @@ def music(gid, mid):
                            playlist=playlist,
                            login_session=login_session)
 
+
 # Add new genre
 @app.route('/genre/add', methods=['GET', 'POST'])
 def add_genre():
@@ -289,6 +290,7 @@ def add_genre():
             sys.exit('Encountered general SQLAlchemyError!')
     else:
         return render_template('add-genre.html', login_session=login_session)
+
 
 # Update genre
 @app.route('/genre/<int:id>/update', methods=['GET', 'POST'])
@@ -391,6 +393,7 @@ def add_music():
                                genres=genres,
                                login_session=login_session)
 
+
 # Update music item
 @app.route('/music/<int:id>/update', methods=['GET', 'POST'])
 def update_music(id):
@@ -461,11 +464,14 @@ def delete_music(id):
     *   API EndPoints    *
     * * * * * * * * * *  *
 '''
+
+
 # All genres categories
 @app.route('/JSON/v1/genres')
 def jsonify_genres():
     genres = session.query(Genre).all()
     return jsonify(genres=[genre.serialize for genre in genres])
+
 
 # # Specific genre
 @app.route('/JSON/v1/genres/<int:id>')
@@ -480,12 +486,14 @@ def jsonify_all_music():
     music = session.query(Music).all()
     return jsonify(music=[m.serialize for m in music])
 
+
 # All music items related to a Specific genre
 @app.route('/JSON/v1/genre/<int:gid>/music')
 def jsonify_genre_playlist(gid):
     music = session.query(Music).filter_by(genre_id=gid).all()
 
     return jsonify(music=[m.serialize for m in music])
+
 
 # Specific music
 @app.route('/JSON/v1/genre/<int:gid>/music/<int:mid>')
