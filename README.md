@@ -34,3 +34,10 @@ This app provides a list of items (music) within a variety of categories (musica
 8. Run `python3 database_setup.py`following by `python3 add_dummy_data.py` to create a database and add some dummy data
 9. Finally run `python3 app.py`, to start running the server
 10. Open the app on your browser at `http://localhost:5000` and have fun
+
+### Accessing API Endpoints:
+For each musical genre category or music item page, there's a linked button with Json API endpoint URI. For exemple:
+* http://localhost:5000/JSON/v1/genre/1/music/1 **Pharaon** music item Json data is returned
+* http://localhost:5000/JSON/v1/genres/1 **Flamenco** genre Json data is returned
+* http://localhost:5000/JSON/v1/music **All music items** is returned
+* http://localhost:5000/JSON/v1/genres **All musical genres** is returned
