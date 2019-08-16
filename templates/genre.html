@@ -15,7 +15,10 @@
             <h3>{{ genre.name }}</h3>
             <div class="divider"></div>
             <p class="left-align">{{ genre.description }}</p>
-            <p class="right-align">Added by <i>{{ creator.name }}</i></p>
+            <div class="row">
+                <a class="waves-effect col s12 m6 white indigo-text waves-light btn-small col s6 m4 left" href="{{ url_for('jsonify_genre', id=genre.id) }}" target="_BLANK"><i class="material-icons right">cloud</i>API</a>
+                <p class="right-align col s12 m6">Added by <i>{{ creator.name }}</i></p>
+            </div>
             {% if genre.user_id == login_session['user_id'] %}
             <div class="">
                 <a class="waves-effect waves-light btn left" href="{{ url_for('update_genre', id=genre.id) }}">
