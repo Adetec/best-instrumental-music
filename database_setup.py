@@ -68,6 +68,7 @@ class Music(Base):
             'id': self.id,
             'title': self.title,
             'artist': self.artist,
+            'description': self.description,
             'image': self.image,
             'video': 'https://www.youtube.com/watch?v=%s' % self.video,
             'genre_id': self.genre_id,
