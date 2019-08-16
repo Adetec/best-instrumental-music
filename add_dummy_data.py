@@ -1,18 +1,23 @@
+# Import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+# Import models
 from database_setup import Base, User, Genre, Music
 import sys
 
+# Connect to the database and create a session
 engine = create_engine('sqlite:///music.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# Create default user
 admin = User(name='Adel Lassag',
              email='adetech.aadl@gmail.com',
              picture='https://avatars0.githubusercontent.com/u/'
                      '24706903?s=400&u=82e40d41ecef3f64738a2c37'
                      'bb6de6c4dfa03efe&v=4')
+# save user to the database
 try:
     session.add(admin)
     session.commit()
@@ -20,6 +25,7 @@ try:
 except exceptions.SQLAlchemyError:
     sys.exit('Encountered general SQLAlchemyError!')
 
+# Create some dummy data objcets
 genres = [
 
     {
@@ -175,7 +181,7 @@ music_items = [
     }
 ]
 
-
+# Save created genres into database
 for i in genres:
     genre = Genre(
         name=i['name'],
@@ -190,7 +196,7 @@ for i in genres:
     except exceptions.SQLAlchemyError:
         sys.exit('Encountered general SQLAlchemyError!')
 
-
+# Save created music items into database
 for i in music_items:
     music = Music(
         title=i['title'],

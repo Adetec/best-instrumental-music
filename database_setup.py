@@ -1,3 +1,4 @@
+# Import SQLAlchemy
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -5,7 +6,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-
+# Create Needed models for database tables
 class User(Base):
     __tablename__ = 'user'
 
@@ -35,6 +36,7 @@ class Genre(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+    # Method for API enpoints
     @property
     def serialize(self):
         return {
