@@ -8,7 +8,9 @@ body {
 .marg-btm {
     margin-bottom: 12px;
 }
-
+#crud {
+    padding: 16px 0;
+}
 #particles {
     position: absolute;
     width: 100%;

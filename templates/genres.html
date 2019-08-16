@@ -18,7 +18,7 @@
                                         {{ music_items|selectattr('genre_id', 'equalto', genre.id )|list|length }}
                                 </span>
                             </span>
-                            <div class="card-action">
+                            <div id="crud" class="card-action">
                                 {% if genre.user_id == login_session['user_id'] %}
                                     <a class="waves-effect waves-light btn left" href="{{ url_for('update_genre', id=genre.id) }}">
                                         <i class="material-icons left">edit</i>
