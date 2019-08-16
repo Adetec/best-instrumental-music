@@ -62,7 +62,7 @@
                                 <p class="grey-text text-darken-4 truncate col s12 m12">{{ genre.description }}</p>
                             </div>
                             <div class="row">
-                                <a class="waves-effect waves-light btn-small col s5 m5 left " href="{{ url_for('genre', id=genre.id) }}"><i class="material-icons left">loupe</i>Read more</a>
+                                <a class="waves-effect waves-light btn-small col s5 m5 left " href="{{ url_for('genre', id=genre.id) }}"><i class="material-icons left">loupe</i>Details</a>
                                 <a class="waves-effect indigo waves-light btn-small col s5 m5 right" href="{{ url_for('jsonify_genre', id=genre.id) }}" target="_BLANK"><i class="material-icons right">cloud</i>API</a>
                             </div>
                             <div class="card-title indigo-text text-darken-4">{{ genre.name}}'s playlist</div>
