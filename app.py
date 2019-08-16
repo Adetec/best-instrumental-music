@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 
 # Import modules
-from flask import Flask, render_template, request, redirect, url_for, make_response, flash, jsonify
+from flask import Flask, render_template, request, redirect
+from flask import url_for, make_response, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Genre, Music
 from flask import session as login_session
-import random, string, httplib2, json, requests
+import random
+import string
+import httplib2
+import json
+import requests
 
 # Import google Oauth modules
 from google.oauth2 import id_token
@@ -38,7 +43,10 @@ def login():
     state = ''.join(random.choice(string.ascii_uppercase +
                     string.digits) for x in range(32))
     login_session['state'] = state
-    return render_template('login.html', state=state, CLIENT_ID=CLIENT_ID, login_session=login_session)
+    return render_template('login.html',
+                           state=state,
+                           CLIENT_ID=CLIENT_ID,
+                           login_session=login_session)
 
 
 @app.route('/logout')
@@ -65,12 +73,11 @@ def logout():
         del login_session['email']
         del login_session['picture']
         del login_session['provider']
-        flash("Successfully loged out")
+        flash('Successfully loged out')
         return redirect(url_for('index'))
     else:
-        flash("FAILED to revoke token for given user")
+        flash('FAILED to revoke token for given user')
         return redirect(url_for('index'))
-
 
 
 @app.route('/gconnect', methods=['GET', 'POST'])
@@ -99,7 +106,6 @@ def gconnect():
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
-    
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1].decode('utf-8'))
     # If there was an error in the access token info, abort.
@@ -112,22 +118,21 @@ def gconnect():
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(
-            json.dumps("Token's user ID doesn't match given user ID."), 401)
+            json.dumps('Token user ID doese not match given user ID.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     # Verify that the access token is valid for this app.
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
-            json.dumps("Token's client ID does not match app's."), 401)
-        print("Token's client ID does not match app's.")
+            json.dumps('Client ID token does not match app token.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
+        response = make_response(json.dumps('already connected.'),
                                  200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -137,7 +142,7 @@ def gconnect():
     login_session['gplus_id'] = gplus_id
 
     # Get user info
-    userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
+    userinfo_url = 'https://www.googleapis.com/oauth2/v1/userinfo'
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
 
@@ -150,21 +155,21 @@ def gconnect():
     login_session['provider'] = 'google'
 
     # see if user exists, if it doesn't make a new one
-    user_id = getUserID(data["email"])
+    user_id = getUserID(data['email'])
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
     # Render success login procedure
     output = ''
     output = '<div class="center-align">'
-    output += '<h1 class="white-text">Welcome, <span class="">'
+    output += '<h1 class="white-text">Welcome, <span>'
     output += login_session['username']
     output += '</span>!</h1>'
     output += '<img class="circle responsive-img" src="'
     output += login_session['picture']
-    output += ' "></div> '
-    flash("you are now logged in as %s" % login_session['username'])
-    print("done!")
+    output += '"></div>'
+    flash('you are now logged in as %s' % login_session['username'])
+    print('done!')
     return output
 
 
@@ -183,12 +188,11 @@ def getUserInfo(user_id):
     return user
 
 
-
 def getUserID(email):
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
-    except:
+    except user:
         return None
 
 
@@ -210,7 +214,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps('Failed to revoke \
+                                token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -221,7 +226,10 @@ def index():
     # Get all music items and genres
     genres = session.query(Genre).all()
     music = session.query(Music).all()
-    return render_template('genres.html', genres=genres, music_items=music, login_session=login_session)
+    return render_template('genres.html',
+                           genres=genres,
+                           music_items=music,
+                           login_session=login_session)
 
 
 @app.route('/genre/<int:id>')
@@ -233,7 +241,11 @@ def genre(id):
     print(creator.name + 'is the creator')
     # Get all music item
     music = session.query(Music).all()
-    return render_template('genre.html', genre=genre, music_items=music, creator=creator, login_session=login_session)
+    return render_template('genre.html',
+                           genre=genre,
+                           music_items=music,
+                           creator=creator,
+                           login_session=login_session)
 
 
 @app.route('/genre/<int:gid>/music/<int:mid>')
@@ -244,7 +256,11 @@ def music(gid, mid):
     playlist = session.query(Music).filter_by(genre_id=gid).all()
     # Get requested music genre
     music = session.query(Music).filter_by(id=mid).one()
-    return render_template('music.html', genre=genre, music=music, playlist=playlist, login_session=login_session)
+    return render_template('music.html',
+                           genre=genre,
+                           music=music,
+                           playlist=playlist,
+                           login_session=login_session)
 
 # Add new genre
 @app.route('/genre/add', methods=['GET', 'POST'])
@@ -255,7 +271,7 @@ def add_genre():
 
     if request.method == 'POST':
         # Create new genre object
-        genre= Genre(
+        genre = Genre(
             name=request.form['name'],
             image=request.form['image'],
             description=request.form['description'],
@@ -281,7 +297,7 @@ def update_genre(id):
     if 'username' not in login_session:
         return redirect(url_for('login'))
 
-    # Get the genre to be updated 
+    # Get the genre to be updated
     genre = session.query(Genre).filter_by(id=id).one()
     # Deny the user if he is not the creator or connected
     if not login_session['user_id'] == genre.user_id:
@@ -293,7 +309,7 @@ def update_genre(id):
         genre.name = request.form['name']
         genre.image = request.form['image']
         genre.description = request.form['description']
-        genre.user_id=login_session['user_id']
+        genre.user_id = login_session['user_id']
         try:
             session.add(genre)
             session.commit()
@@ -304,7 +320,9 @@ def update_genre(id):
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
     else:
-        return render_template('update-genre.html', genre=genre, login_session=login_session)
+        return render_template('update-genre.html',
+                               genre=genre,
+                               login_session=login_session)
 
 
 @app.route('/genre/<int:id>/delete')
@@ -347,7 +365,7 @@ def add_music():
     genres = session.query(Genre).all()
     if request.method == 'POST':
         # Create new music object
-        music= Music(
+        music = Music(
             title=request.form['title'],
             artist=request.form['artist'],
             image=request.form['image'],
@@ -369,7 +387,9 @@ def add_music():
             sys.exit('Encountered general SQLAlchemyError!')
     # If the method is 'GET'
     else:
-        return render_template('add-music.html', genres=genres, login_session=login_session)
+        return render_template('add-music.html',
+                               genres=genres,
+                               login_session=login_session)
 
 # Update music item
 @app.route('/music/<int:id>/update', methods=['GET', 'POST'])
@@ -385,7 +405,8 @@ def update_music(id):
         # Alert authorization
         flash('Sorry!, You are not autorized to Update %s' % music.title)
         return redirect(url_for('index'))
-    # Get all genres records in case the user want changing requested music to other genre
+    # Get all genres records in case the user
+    # want changing requested music to other genre
     genres = session.query(Genre).all()
     # Save user changes
     if request.method == 'POST':
@@ -394,7 +415,7 @@ def update_music(id):
         music.video = request.form['video']
         music.description = request.form['description']
         music.genre_id = request.form['genre']
-        music.user_id=login_session['user_id']
+        music.user_id = login_session['user_id']
         try:
             session.add(music)
             session.commit()
@@ -405,7 +426,10 @@ def update_music(id):
         except exceptions.SQLAlchemyError:
             sys.exit('Encountered general SQLAlchemyError!')
     else:
-        return render_template('update-music.html', music=music, login_session=login_session, genres=genres)
+        return render_template('update-music.html',
+                               music=music,
+                               login_session=login_session,
+                               genres=genres)
 
 
 @app.route('/music/<int:id>/delete')
@@ -470,6 +494,7 @@ def jsonify_music(gid, mid):
     music = session.query(Music).filter_by(id=mid).one()
 
     return jsonify(music=music.serialize)
+
 
 # Run the app in the '__main__' scope
 if __name__ == '__main__':

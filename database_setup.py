@@ -75,7 +75,6 @@ class Music(Base):
             'user_id': self.user_id
         }
 
-        
 
 engine = create_engine('sqlite:///music.db')
 Base.metadata.create_all(engine)
