@@ -53,6 +53,33 @@ genres = [
         'create a peaceful atmosphere in their home or other environments, '
         'and is associated with environmentalism and New Age spirituality.',
         'user_id': 1
+    },
+    {
+        'name': 'Blues',
+        'image': '',
+        'description': 'is a music genre and musical '
+        'form which was originated in the Deep South of '
+        'the United States around the 1870s by African '
+        'Americans from roots in African musical traditions, '
+        'African-American work songs, and spirituals. Blues '
+        'incorporated spirituals, work songs, field hollers, '
+        'shouts, chants, and rhymed simple narrative ballads.',
+        'user_id': 1
+    },
+    {
+        'name': 'Rock',
+        'image': 'https://image.freepik.com/free-photo/'
+                 'musicians-stage-during-concert_1321-453.jpg',
+        'description': 'is a broad genre of popular music '
+        'that originated as "rock and roll" in the United '
+        'States in the early 1950s, and developed into a '
+        'range of different styles in the 1960s and later, '
+        'particularly in the United States and the United '
+        'Kingdom. It has its roots in 1940s and 1950s rock '
+        'and roll, a style which drew heavily from the '
+        'genres of blues, rhythm and blues, and from '
+        'country music.',
+        'user_id': 1
     }
 ]
 
@@ -116,6 +143,34 @@ music_items = [
         'chart; No. 84 on the "Billboard 200" chart; and at No. 84 on the '
         '"Top Internet Albums" chart, during the same year.',
         'genre_id': 3,
+        'user_id': 1
+    },
+    {
+        'title': 'Tender surrender',
+        'artist': 'Steve Vai',
+        'image': 'https://is1-ssl.mzstatic.com/image/thumb/Video128/v4'
+                 '/e9/c2/bf/e9c2bf8c-50d3-42fb-a5b3-36a8a25510b9/dj.'
+                 'zaqliojr.jpg/735x414mv.jpg',
+        'video': 'Yw74sDWPH7U',
+        'description': 'Steve Vai performs "Tender Surrender" from '
+        'the DVD "Alien Love Secrets" featuring full-length performance '
+        'videos of every song from the "Alien Love Secrets" EP.',
+        'genre_id': 5,
+        'user_id': 1
+    },
+    {
+        'title': 'Always With Me, Always With You',
+        'artist': 'Joe Satriani',
+        'image': 'https://media2.fdncms.com/clevescene/imager/'
+                 'joe-satriani-playing-at-the-lakewood-civic-auditorium/'
+                 'u/inlineslideshow/3660629/a-1.jpg',
+        'video': 'VI57QHL6ge0',
+        'description': 'Surfing with the Alien is the second '
+        'studio album by American rock guitarist Joe Satriani. '
+        'It was released on October 15, 1987, by Relativity Records. '
+        'The album is one of Satriani\'s most successful to date and '
+        'helped establish his reputation as a respected rock guitarist.',
+        'genre_id': 5,
         'user_id': 1
     }
 ]
