@@ -21,13 +21,13 @@
             </ul>
         {% endif %}
         <!-- Dropdown Trigger -->
-        <a class='dropdown-trigger indigo btn' href='#' data-target='dropdown'>API ENDPOINTS</a>
+        <a class='dropdown-trigger indigo btn' href='#' data-target='dropdown'>API</a>
 
         <!-- Dropdown Structure -->
         <ul id='dropdown' class='dropdown-content indigo darken-4 z-depth-4'>
-            <li><a href="{{ url_for('jsonify_genres') }}" target="_BLANK" class="white-text">All genres</a></li>
+            <li><a href="{{ url_for('jsonify_genres') }}" target="_BLANK" class="white-text">genres</a></li>
             <li class="divider" tabindex="-1"></li>
-            <li><a href="{{ url_for('jsonify_all_music') }}" target="_BLANK" class="white-text">All music</a></li>
+            <li><a href="{{ url_for('jsonify_all_music') }}" target="_BLANK" class="white-text">all music</a></li>
         </ul>
     </div>
 </nav>
@@ -44,4 +44,15 @@
         <li><a class="radius indigo darken-4 btn" href="{{ url_for('login') }}">Login</a></li>
     </ul>
     {% endif %}
+    <!-- Dropdown Trigger -->
+    <ul>
+        <li><a class='dropdown-trigger indigo btn' href='#' data-target='dropdown'>API ENDPOINTS</a></li>
+    </ul>
+
+    <!-- Dropdown Structure -->
+    <ul id='dropdown' class='dropdown-content indigo darken-4 z-depth-4'>
+        <li><a href="{{ url_for('jsonify_genres') }}" target="_BLANK" class="white-text">All genres</a></li>
+        <li class="divider" tabindex="-1"></li>
+        <li><a href="{{ url_for('jsonify_all_music') }}" target="_BLANK" class="white-text">all music</a></li>
+    </ul>
 </ul>
