@@ -79,5 +79,6 @@ class Music(Base):
         }
 
 
-engine = create_engine('sqlite:///music.db')
+# engine = create_engine('sqlite:///music.db')
+engine = create_engine('postgresql://music:password@localhost/music')
 Base.metadata.create_all(engine)

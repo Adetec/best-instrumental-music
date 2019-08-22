@@ -20,7 +20,8 @@ from oauth2client.client import FlowExchangeError, flow_from_clientsecrets
 app = Flask(__name__)
 
 # Connect to the database
-engine = create_engine('sqlite:///music.db?check_same_thread=False')
+# engine = create_engine('sqlite:///music.db?check_same_thread=False')
+engine = create_engine('postgresql://music:password@localhost/music')
 # Create database session
 DBsession = sessionmaker(bind=engine)
 session = DBsession()

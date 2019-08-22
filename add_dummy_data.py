@@ -6,7 +6,8 @@ from database_setup import Base, User, Genre, Music
 import sys
 
 # Connect to the database and create a session
-engine = create_engine('sqlite:///music.db')
+# engine = create_engine('sqlite:///music.db')
+engine = create_engine('postgresql://music:password@localhost/music')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
