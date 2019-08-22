@@ -208,7 +208,9 @@ for i in music_items:
         genre_id=i['genre_id'],
         user_id=i['user_id']
     )
-    
-    session.add(music)
-    session.commit()
-    print('Music:' + music.title + ' added to the database')
+    try:
+        session.add(music)
+        session.commit()
+        print('Music:' + music.title + ' added to the database')
+    except exceptions.SQLAlchemyError:
+        sys.exit('Encountered general SQLAlchemyError!')
