@@ -27,7 +27,7 @@ DBsession = sessionmaker(bind=engine)
 session = DBsession()
 
 # google client secret variables
-g_credentials = json.loads(open('client_secret.json', 'r').read())['web']
+g_credentials = json.loads(open('/var/www/music/client_secret.json', 'r').read())['web']
 CLIENT_ID = g_credentials['client_id']
 CLIENT_SECRET = g_credentials['client_secret']
 APP_NAME = g_credentials['project_id']
