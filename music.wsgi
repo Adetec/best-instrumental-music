@@ -6,4 +6,4 @@ sys.path.insert(0,'/var/www/music')
 
 from app import app as application
 
-app.secret_key = 'super secret key'
+application.secret_key = 'super secret key'
